@@ -1,0 +1,4 @@
+venv/
+.idea/
+creds/
+*.json
