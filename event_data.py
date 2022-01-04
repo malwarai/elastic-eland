@@ -2,8 +2,9 @@ import eland as ed
 from creds import config
 import networkx as nx
 
+
 #Get event data from elastic
-def get_event_data( index, eql_query=None, size=1000):
+def get_event_data(index, eql_query=None, size=1000):
 	Es = config.es
 	if eql_query:
 		events = Es.eql.search(index=index, body = {'query': eql_query, 'size':size})
@@ -35,15 +36,13 @@ def generate_event_graph_apache_errors(df):
 
 #define attack severity based on the url pattern of the host and the number of cases
 def attack_severity(data):
-	count_cases = data.shape[0]
 	unique_url_paths =list(data['url.path'].unique())
-	score = [find_vulnerability_indicator(u) for u in unique_url_paths]
+	score = [find_vulnerability_score(u) for u in unique_url_paths]
 	return sum(score)
 
 
-def find_vulnerability_indicator(indicator):
-	# TODO use an API to determine how the indicator is related to an existing vuln, e.g. CVE
-	# severity should be related to the CVSS or other vuln system
-	severity=0.01
+def find_vulnerability_score(indicator):
+	# TODO: use an API to determine how the indicator is related to an existing vuln., e.g. CVE database
+	# severity should be related to the CVSS or other vuln scoring system.
+	severity=1
 	return severity
-
